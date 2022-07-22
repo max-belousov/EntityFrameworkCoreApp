@@ -17,13 +17,14 @@ namespace EntityFrameworkCoreApp.Models
         }
 
         public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=DELICIA-ASUS-ZB;Database=MSSQLOnlineShopdb;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DELICIA-ASUS-ZB;Database=MSSQLOnlineShopdb;Trusted_Connection=true;");
             }
         }
 
@@ -54,6 +55,21 @@ namespace EntityFrameworkCoreApp.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.ThirdName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.ItemName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
